@@ -1,3 +1,8 @@
+# This script will retrieve your user data from Deezer, if your profile is public.
+# If you have a private profile, I'd highly recommend you set your profile to public for this process can
+# succeed. Basically this reduces the complexity of this script by not including OAuth/Token Exchange
+# procedures.
+
 import urllib.request
 import urllib.parse
 import json
@@ -10,9 +15,6 @@ import json
 # ctx.verify_mode = ssl.CERT_NONE
 
 # --- +++ ---
-# This works if your profile is public. If you have a private profile I'd highly recommend you
-# set your profile to public for this process, this will avoid the complexity of working with OAuth tokens which is
-# overkill, in my opinion, of course. :)
 
 # E.g 1820946382
 user_id = input("Enter your Deezer user ID: ")
@@ -37,6 +39,7 @@ print("\n")
 track_choice = input("Would you like to see the track list from one of these playlists? (yes / no) ")
 
 
+# TODO: Optimise functions so that they can return reusable data, instead of printing. "return list" :)
 def print_tracks_all(data):
     # Prints out everything about a track, included in a numbered list.
     internal_counter = 0
@@ -166,7 +169,10 @@ def print_artist(data):
         else:
             pass
 
+
 # TODO: Investigate why the items are being dismissed and file not created.
+# TODO: Re-write with "printing" functions returning a list element.
+# TODO:
 def write_tracks(file_name, data):
     # For this function we need to handle a TypeError exception.
     # When the previous functions finish doing their job, they return None
@@ -176,11 +182,13 @@ def write_tracks(file_name, data):
     for number, option in enumerate(options, start=1):
         print("{}. {}\n".format(number, option))
 
-    prompt = input("Please type in the option number: ()")
+    prompt = input("Please type in the option number: ")
     # The input from the user is always a string. ;)
     try:
         if prompt == '1':
-            file_name.write(print_track_name_and_artist(data))
+            print_list = [print_track_name_and_artist(data)]
+            for i in print_list:
+                file_name.write(i)
 
         if prompt == '2':
             file_name.write(print_track_name_only(data))
@@ -226,12 +234,14 @@ while True:
                     result = urllib.request.urlopen(track_url).read()
                     dat = json.loads(result)
                     total = dat["nb_tracks"]
-                    number_of_tracks = input("Include number of tracks? (y / n)")
+                    number_of_tracks = input('Include number of tracks? (file header) (y / n): ')
                     if number_of_tracks == 'y' or 'yes':
                         tracks.write(" **** This playlist has a total of {} tracks. ****\n".format(total))
                         write_tracks(tracks, dat["tracks"]["data"])
+                        break
                     else:
                         write_tracks(tracks, dat["tracks"]["data"])
+                        break
 
             if echo_to_file == "no":
                 print("\n")
@@ -240,7 +250,7 @@ while True:
 
         if track_choice == 'no':
             print("\n")
-            print("=== Alright, exiting... ===")
+            print('=== If you would like to print the contents to a file, select "yes" next time. ===')
             break
 
     except Exception as ex:
