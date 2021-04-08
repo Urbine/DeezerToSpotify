@@ -40,172 +40,170 @@ track_choice = input("Would you like to see the track list from one of these pla
 
 
 # TODO: Optimise functions so that they can return reusable data, instead of printing. "return list" :)
-def print_tracks_all(data):
-    # Prints out everything about a track, included in a numbered list.
-    internal_counter = 0
-    allowed_selection = ['y', 'yes', 'n', 'no']
-    prompt = input("Would you like to print a numbered list? (y / n) \n")
-    if prompt == 'y' or prompt == 'yes':
+
+def get_tracks_info(data, num_choice=False):
+    """
+    This function returns specific information about each track.
+    1. Number
+    2. Title
+    3. Artist name
+    4. Album title
+    :param data: data requires a JSON file loaded as string (.loads method)
+    :param num_choice: num_choice is a Boolean value and it's optional parameter.
+    :return: List of tuples
+    e.g [(1, Hotel California, The Eagles),...]
+    """
+    internal_counter = 1
+    results = []
+    if num_choice:
         for item in data:
             track_name = item['title']
             artist_name = item["artist"]["name"]
             album_title = item["album"]["title"]
-            print("{}. {} | {} | {}\n".format(internal_counter,
-                                              track_name,
-                                              artist_name,
-                                              album_title))
+            results.append((str(internal_counter),
+                            track_name,
+                            artist_name,
+                            album_title))
             internal_counter += 1
-
-    if prompt == 'n' or prompt == 'no':
+    else:
         for item in data:
             track_name = item['title']
             artist_name = item["artist"]["name"]
             album_title = item["album"]["title"]
-            print("{} | {} | {}\n".format(track_name,
-                                          artist_name,
-                                          album_title))
-            internal_counter += 1
+            results.append((track_name, artist_name, album_title))
+    return results
 
-    if prompt not in allowed_selection:
-        raise Exception("You typed in an incorrect value, please try again!")
+
+def get_track_name_artist_only(data, num_choice=False):
+    """
+    This function returns specific information about each track.
+    The function was created as a building block for a simple comparison algorithm.
+    1. Title
+    2. Artist name
+    3. Track number (if num_choice is set to True)
+    :param num_choice: Adds a number in the tuple containing the track info.
+    :param data: data requires a JSON file loaded as string (.loads method)
+    :return: List of tuples.
+    e.g [(Hotel California, The Eagles),...]
+    """
+    results = []
+    track_info = get_tracks_info(data, num_choice=num_choice)
+    if num_choice:
+        for num, title, artist, album in track_info:
+            pack = (num, title, artist)
+            results.append(pack)
     else:
-        pass
+        for title, artist, album in track_info:
+            pack = (title, artist)
+            results.append(pack)
+    return results
 
 
-def print_track_name_only(data):
-    # Just the name of the track, meant for comparison.
-    # The comparison algorithm should be improved so from there
-    # the need of refactoring every time we make major modifications.
-    internal_counter = 0
-    allowed_selection = ['y', 'yes', 'n', 'no']
-    prompt = input("Would you like to print a numbered list? (y / n) ")
-    if prompt == 'y' or prompt == 'yes':
-        for item in data:
-            track_name = item['title']
-            print("{}. {}\n".format(internal_counter, track_name))
-            internal_counter += 1
-
-    if prompt == 'n' or prompt == 'no':
-        for item in data:
-            track_name = item['title']
-            print("{}\n".format(track_name))
-            internal_counter += 1
-
-    if prompt not in allowed_selection:
-        raise Exception("You typed in an incorrect value, please try again!")
+def get_albums(data, num_choice=False):
+    """
+    This function returns specific information about each track.
+    The function was created as a building block for a simple comparison algorithm.
+    1. Album name
+    2. Element number (if num_choice is set to True)
+    :param num_choice: Adds a number in the tuple containing the track info.
+    :param data: data requires a JSON file loaded as string (.loads method)
+    :return: List of tuples or just a list if the number is not added.
+    e.g [(Hotel California, The Eagles),...]
+    """
+    results = []
+    track_info = get_tracks_info(data, num_choice=num_choice)
+    if num_choice:
+        for num, title, artist, album in track_info:
+            pack = (num, album)
+            results.append(pack)
     else:
-        pass
+        for title, artist, album in track_info:
+            results.append(album)
+    return results
 
 
-def print_track_name_and_artist(data):
-    # Track name and artist, included in a numbered list
-    # if the user specifically chooses so.
-    allowed_selection = ['y', 'yes', 'n', 'no']
-    internal_counter = 0
-    prompt = input("Would you like to print a numbered list? (y / n) ")
-    if prompt == 'y' or prompt == 'yes':
-        for item in data:
-            track_name = item['title']
-            artist_name = item["artist"]["name"]
-            print("{}. {} | {}\n".format(internal_counter, track_name, artist_name))
-            internal_counter += 1
-
-    if prompt == 'n' or prompt == 'no':
-        for item in data:
-            track_name = item['title']
-            artist_name = item["artist"]["name"]
-            print("{} | {}\n".format(track_name, artist_name))
-            internal_counter += 1
-
-    if prompt not in allowed_selection:
-        raise Exception("You typed in an incorrect value, please try again!")
+def get_track_name(data, num_choice=False):
+    """
+    This function returns specific information about each track.
+    The function was created as a building block for a simple comparison algorithm.
+    1. Album name
+    2. Element number (if num_choice is set to True)
+    :param num_choice: Adds a number in the tuple containing the track info.
+    :param data: data requires a JSON file loaded as string (.loads method)
+    :return: List of tuples or just a list if the number is not added.
+    e.g [(Hotel California, The Eagles),...]
+    """
+    results = []
+    track_info = get_tracks_info(data, num_choice=num_choice)
+    if num_choice:
+        for num, title, artist, album in track_info:
+            pack = (num, title)
+            results.append(pack)
     else:
-        pass
+        for title, artist, album in track_info:
+            results.append(title)
+    return results
 
 
-def print_albums(data):
-    # Prints out the album related to the track, included in a numbered list.
-    # Number list is optional.
-    internal_counter = 0
-    allowed_selection = ['y', 'yes', 'n', 'no']
-    prompt = input("Would you like to print a numbered list? (y / n) ")
-    if prompt == 'y' or prompt == 'yes':
-        for item in data:
-            album_title = item["album"]["title"]
-            print("{}. {}\n".format(internal_counter, album_title))
-            internal_counter += 1
-
-    if prompt == 'n' or prompt == 'no':
-        for item in data:
-            album_title = item["album"]["title"]
-            print("{}".format(album_title))
-            internal_counter += 1
-
-    if prompt not in allowed_selection:
-        raise Exception("You typed in an incorrect value, please try again!")
+def get_artist(data, num_choice=False):
+    """
+    This function returns specific information about each track.
+    The function was created as a building block for a simple comparison algorithm.
+    1. Artist name
+    2. Element number (if num_choice is set to True)
+    :param num_choice: Adds a number in the tuple containing the track info.
+    :param data: data requires a JSON file loaded as string (.loads method)
+    :return: List of tuples or just a list if the number is not added.
+    e.g [(Hotel California, The Eagles),...]
+    """
+    results = []
+    track_info = get_tracks_info(data, num_choice=num_choice)
+    if num_choice:
+        for num, title, artist, album in track_info:
+            pack = (num, artist)
+            results.append(pack)
     else:
-        pass
-
-
-def print_artist(data):
-    # Prints out everything about a track, included in a numbered list.
-    internal_counter = 0
-    allowed_selection = ['y', 'yes', 'n', 'no']
-    prompt = input("Would you like to print a numbered list? (y / n) ")
-    if prompt == 'y' or prompt == 'yes':
-        for item in data:
-            artist_name = item["artist"]["name"]
-            print("{}. {}\n".format(internal_counter, artist_name))
-            internal_counter += 1
-
-    if prompt == 'n' or prompt == 'no':
-        for item in data:
-            artist_name = item["artist"]["name"]
-            print("{}\n".format(artist_name))
-            internal_counter += 1
-
-        if prompt not in allowed_selection:
-            raise Exception("You typed in an incorrect value, please try again!")
-        else:
-            pass
+        for title, artist, album in track_info:
+            results.append(artist)
+    return results
 
 
 # TODO: Investigate why the items are being dismissed and file not created.
-# TODO: Re-write with "printing" functions returning a list element.
-# TODO:
-def write_tracks(file_name, data):
-    # For this function we need to handle a TypeError exception.
-    # When the previous functions finish doing their job, they return None
-    # this will end up in exception if not handled.
-    print("What would you like to write? \n")
-    options = ["Track Name and Artist", "Track Name", "Album", "Artist", "All (default/recommended)"]
-    for number, option in enumerate(options, start=1):
-        print("{}. {}\n".format(number, option))
 
+def write_tracks(file_name, data):
+    """
+    This function will write the objects into the file selected.
+    It should be used when there is a file handle already and we just
+    want to write the contents.
+    :param file_name: file name assigned to the file handle
+    :param data: data coming from the JSON loaded file to be processed by other functions.
+    """
+    print("What would you like to write? \n")
+    options = ("Track Name and Artist", "Track Name", "Album", "Artist", "All (default/recommended)")
+    for number, option in enumerate(options, start=1):
+        print("{}. {}".format(number, option))
     prompt = input("Please type in the option number: ")
     # The input from the user is always a string. ;)
-    try:
-        if prompt == '1':
-            print_list = [print_track_name_and_artist(data)]
-            for i in print_list:
-                file_name.write(i)
-
-        if prompt == '2':
-            file_name.write(print_track_name_only(data))
-
-        if prompt == '3':
-            file_name.write(print_albums(data))
-
-        if prompt == '4':
-            file_name.write(print_artist(data))
-
-        if prompt == '5':
-            file_name.write(print_tracks_all(data))
-    except TypeError:
-        print("=== Text file ready ===")
-        print(" -----> Exiting <----- ")
-        quit()
-
+    if prompt == '1':
+        print_list = get_track_name_artist_only(data)
+        for i, k in print_list:
+            file_name.write("{} | {}\n".format(i, k))
+    if prompt == '2':
+        print_list = get_track_name(data)
+        for i in print_list:
+            file_name.write("{}\n".format(i))
+    if prompt == '3':
+        print_list = get_albums(data)
+        for i in print_list:
+            file_name.write("{}\n".format(i))
+    if prompt == '4':
+        print_list = get_artist(data)
+        for i in print_list:
+            file_name.write("{}\n".format(i))
+    if prompt == '5':
+        print_list = get_tracks_info(data)
+        for i, j, k in print_list:
+            file_name.write("{} | {} | {}\n".format(i, j, k))
 
 while True:
     try:
@@ -222,13 +220,18 @@ while True:
             print("This playlist has a total of {} tracks.\n".format(total))
 
             # Data = dat["tracks"]["data"] >> this is passed into all printing functions.
-            print_tracks_all(dat["tracks"]["data"])
+            tracks = get_tracks_info(dat["tracks"]["data"], num_choice=True)
+            for x, j, k, l in tracks:
+                print("{}. {} | {} | {}".format(x, j, k, l))
 
             print("\n")
             echo_to_file = input("Would you like to write the contents of this list to a text file? (yes / no) ")
             if echo_to_file == 'yes':
                 playlist_name = js["data"][int(index) - 1]['title']
-                with open('tracks-playlist-' + playlist_name + ".txt", "a+", encoding="utf-8") as tracks:
+                with open('tracks-playlist-'
+                          + playlist_name
+                          + ".txt",
+                          "a+", encoding="utf-8") as tracks:
                     playlist_id = js["data"][int(index) - 1]['id']
                     track_url = "https://api.deezer.com/playlist/" + str(playlist_id)
                     result = urllib.request.urlopen(track_url).read()

@@ -27,32 +27,55 @@ spot_client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=cl_id,
                                                         redirect_uri=uri,
                                                         scope=scope))
 
+
 # TODO: Add an option for the user to enter the file name.
+# TODO: Add a boolean based list to display the migration results to the user.
+# TODO: Try with list of tuples once again.
+def get_from_file(file_name):
+    results = {}
+    try:
+        with open(file_name, "r", encoding="utf-8") as file:
+            for ln in file.readlines():
+                st = ln.split("|")
+                key = st[1].strip()
+                val = st[0].strip()
+                if key in results.keys():
+                    continue
+                else:
+                    results[key] = val
+        return results
+    except IndexError:
+        print("This item could not be processed" + str(st))
+        pass
 
-tracks_deezer = []
-tracks_spotify = []
-track_updates = []
 
-with open("tracks-playlist-Jazz For Lovers.txt", "r", encoding="utf-8") as deezer:
-    for line in deezer.readlines():
-        st = line.strip()
-        tracks_deezer.append(st)
+# TODO: Find a way to match the content of a key, not part of it.
+def find_updates(data_one, data_two):
+    updates = {}
+    for key in data_one.keys():
+        if key in data_two.keys():
+            if data_two[key] is data_one[key]:
+                continue
+            else:
+                updates[key] = data_one[key]
+        else:
+            updates[key] = data_one[key]
+        return updates
 
-with open("tracks-playlist-Jazz For Lovers-Spotify.txt", "r", encoding="utf-8") as spotify:
-    for line in spotify.readlines():
-        st = line.strip()
-        tracks_spotify.append(st)
+
+file_deezer = "tracks-playlist-Love Songs.txt"
+file_spotify = "tracks-playlist-Love Songs-Spotify.txt"
+
+tracks_deezer = get_from_file(file_deezer)
+tracks_spotify = get_from_file(file_spotify)
+
+track_updates = find_updates(tracks_deezer, tracks_spotify)
 
 print("We've found these tracks below are not in Spotify yet! \n")
-for track in tracks_spotify:
-    if track not in tracks_deezer:
-        track_updates.append(track)
-
 update_counter = 1
-for track in tracks_spotify:
-    if track not in tracks_deezer:
-        print('{}. {}'.format(update_counter, track))
-        update_counter += 1
+for key, val in track_updates.items():
+    print(f'{key} | {val}')
+    update_counter += 1
 
 # TODO: Redo list comparison algorithm. IDEA! Word comparison.
 

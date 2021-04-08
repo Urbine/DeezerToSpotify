@@ -96,8 +96,8 @@ if echo_to_file == 'yes':
         count_track = 1
         # track_list.write(" **** This playlist has a total of {} tracks. ****\n".format(total))
         for track, artist, album in combined:
-            # track_list.write("{}. {} | {} | {}\n".format(count_track, track, artist, album))
-            track_list.write(track + "\n")
+            track_list.write("{} | {}\n".format(track, artist))  # Deleted count_track and album
+            # track_list.write(track + "\n")
             count_track += 1
             if count_track == total:
                 print("=== Text file ready ===")
