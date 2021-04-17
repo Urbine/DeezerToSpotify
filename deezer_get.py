@@ -39,8 +39,6 @@ print("\n")
 track_choice = input("Would you like to see the track list from one of these playlists? (yes / no) ")
 
 
-# TODO: Optimise functions so that they can return reusable data, instead of printing. "return list" :)
-
 def get_tracks_info(data, num_choice=False):
     """
     This function returns specific information about each track.
@@ -168,8 +166,6 @@ def get_artist(data, num_choice=False):
     return results
 
 
-# TODO: Investigate why the items are being dismissed and file not created.
-
 def write_tracks(file_name, data):
     """
     This function will write the objects into the file selected.
@@ -229,22 +225,16 @@ while True:
             if echo_to_file == 'yes':
                 playlist_name = js["data"][int(index) - 1]['title']
                 with open('tracks-playlist-'
-                          + playlist_name
-                          + ".txt",
+                          + playlist_id
+                          + '.txt',
                           "a+", encoding="utf-8") as tracks:
                     playlist_id = js["data"][int(index) - 1]['id']
                     track_url = "https://api.deezer.com/playlist/" + str(playlist_id)
                     result = urllib.request.urlopen(track_url).read()
                     dat = json.loads(result)
                     total = dat["nb_tracks"]
-                    number_of_tracks = input('Include number of tracks? (file header) (y / n): ')
-                    if number_of_tracks == 'y' or 'yes':
-                        tracks.write(" **** This playlist has a total of {} tracks. ****\n".format(total))
-                        write_tracks(tracks, dat["tracks"]["data"])
-                        break
-                    else:
-                        write_tracks(tracks, dat["tracks"]["data"])
-                        break
+                    write_tracks(tracks, dat["tracks"]["data"])
+                    break
 
             if echo_to_file == "no":
                 print("\n")

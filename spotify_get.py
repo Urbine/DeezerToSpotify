@@ -7,16 +7,18 @@ from spotipy.oauth2 import SpotifyOAuth
 # ctx.check_hostname = False
 # ctx.verify_mode = ssl.CERT_NONE
 
-sco = "user-library-read playlist-read-private"
+sco = "user-library-read user-library-modify playlist-read-private playlist-modify-private"
 # cli_id = input("Please enter your Spotify Client ID: ") #  32878798075240d98dee5b2ad2a70e5a
 # cli_secret = input("Please enter your Spotify Client Secret:  ") # 433594c80b6044ee9c92b87438e8e170
 # redir_uri = input("Please enter your redirect URI: ")
 
 # Common redirect URI: http://localhost:8888/callback/ <whitelisted in Spotify>
 
+# TODO: Resolve token issues
+
 cl_id = "32878798075240d98dee5b2ad2a70e5a"
 secret = "433594c80b6044ee9c92b87438e8e170"
-uri = "http://localhost:8888/callback/" # Whitelist this URI within the application page.
+uri = "http://localhost:8888/callback/"  # Whitelist this URI within the application page.
 
 spot_client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=cl_id,
                                                         client_secret=secret,
@@ -94,7 +96,6 @@ if echo_to_file == 'yes':
     combined = zip(track_names, artist_names, album_names)
     with open('tracks-playlist-' + playlist_name + "-Spotify.txt", "a+", encoding="utf-8") as track_list:
         count_track = 1
-        # track_list.write(" **** This playlist has a total of {} tracks. ****\n".format(total))
         for track, artist, album in combined:
             track_list.write("{} | {}\n".format(track, artist))  # Deleted count_track and album
             # track_list.write(track + "\n")
