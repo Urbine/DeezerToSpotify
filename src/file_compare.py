@@ -82,8 +82,8 @@ def track_search_spotify(track_name, limit, offset):
     return result
 
 
-file_deezer = "tracks-playlist-Bill Evans Solo Piano-Spotify.txt"
-file_spotify = "tracks-playlist-Music for supermarkets-Spotify.txt"
+file_deezer = "../tracks-playlist-Bill Evans Solo Piano-Spotify.txt"
+file_spotify = "../tracks-playlist-Music for supermarkets-Spotify.txt"
 
 tracks_deezer = get_from_file(file_deezer)
 tracks_spotify = get_from_file(file_spotify)
