@@ -1,27 +1,23 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
+# Enable in case there a SSL certificate.
 # import ssl
-#
 # ctx = ssl.create_default_context()
 # ctx.check_hostname = False
 # ctx.verify_mode = ssl.CERT_NONE
 
 sco = "user-library-read user-library-modify playlist-read-private playlist-modify-private"
-# cli_id = input("Please enter your Spotify Client ID: ") #  32878798075240d98dee5b2ad2a70e5a
-# cli_secret = input("Please enter your Spotify Client Secret:  ") # 433594c80b6044ee9c92b87438e8e170
+cli_id = input("Please enter your Spotify Client ID: ")
+cli_secret = input("Please enter your Spotify Client Secret:  ")
 # redir_uri = input("Please enter your redirect URI: ")
 
 # Common redirect URI: http://localhost:8888/callback/ <whitelisted in Spotify>
 
-# TODO: Resolve token issues
-
-cl_id = "32878798075240d98dee5b2ad2a70e5a"
-secret = "433594c80b6044ee9c92b87438e8e170"
 uri = "http://localhost:8888/callback/"  # Whitelist this URI within the application page.
 
-spot_client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=cl_id,
-                                                        client_secret=secret,
+spot_client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=cli_id,
+                                                        client_secret=cli_secret,
                                                         redirect_uri=uri,
                                                         scope=sco))
 

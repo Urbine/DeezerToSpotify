@@ -15,8 +15,11 @@
 *.ipr
 *.iws
 .idea/
+/venv
 
 # Lift Environment Related
 .lift/
 
-
+# Individual Files
+/app_auth_cred.txt
+/.cache

@@ -3,28 +3,25 @@
 
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-import pprint
 import re
 
+# Just in case.
 # import ssl
-#
 # ctx = ssl.create_default_context()
 # ctx.check_hostname = False
 # ctx.verify_mode = ssl.CERT_NONE
 
 scope = 'user-library-read user-library-modify playlist-modify playlist-read-private playlist-modify-private'
-# cli_id = input("Please enter your Spotify Client ID: ") #  32878798075240d98dee5b2ad2a70e5a
-# cli_secret = input("Please enter your Spotify Client Secret:  ") # 433594c80b6044ee9c92b87438e8e170
+cli_id = input("Please enter your Spotify Client ID: ")
+cli_secret = input("Please enter your Spotify Client Secret:  ")
 # redir_uri = input("Please enter your redirect URI: ")
 
 # Common redirect URI: http://localhost:8888/callback/ <whitelisted in Spotify>
 
-cl_id = "32878798075240d98dee5b2ad2a70e5a"
-secret = "433594c80b6044ee9c92b87438e8e170"
 uri = "http://localhost:8888/callback/"  # Whitelist this URI within the application page.
 
-spot_client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=cl_id,
-                                                        client_secret=secret,
+spot_client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=cli_id,
+                                                        client_secret=cli_secret,
                                                         redirect_uri=uri,
                                                         scope=scope))
 
@@ -34,6 +31,8 @@ spot_client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=cl_id,
 # TODO: Add an option for the user to enter the file name.
 # TODO: Add a boolean based list to display the migration results to the user.
 # TODO: Try with list of tuples once again.
+
+
 def get_from_file(file_name):
     results = {}
     try:
@@ -70,13 +69,13 @@ def find_updates(data_one, data_two):
 
 
 def track_search_spotify(track_name, limit, offset):
-    '''
+    """
         This function will use the Spotipy module to search songs in Spotify.
         :param track_name: String
         :param limit: Integer
         :param offset: Integer
         :return: Loaded JSON file / Dictionary
-        '''
+    """
     result = spot_client.search(track_name, limit=limit, offset=offset, type='track',
                                 market=None)
     return result
@@ -106,7 +105,7 @@ print("If you choose to add all tracks, we'll add the first result in every occu
 user_choice = input("Would you like to add all the tracks to Spotify? (yes / no) \n")
 
 # Spotify API encodes queries by adding "%20", "%28", "%29" or "+"
-# if there's a whitespace, and adds it to the address.
+# if there's a whitespace, and adds it to the URL.
 # The module handles this. I am just adding the track without any formatting.
 
 if user_choice == 'yes':
@@ -125,7 +124,6 @@ if user_choice == 'yes':
     playlist_name = playlists["items"][int(index) - 1]['name']
 
     print("Okay, this is your playlist ID: {}\n".format(playlist_id))
-    # username = input("Please enter your Spotify username: ")  # TODO: Delete this line of code
     add_playlist_counter = -1
 
     items = []

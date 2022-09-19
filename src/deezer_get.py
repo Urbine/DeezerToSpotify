@@ -9,11 +9,9 @@ import json
 
 # --- In case I need it ---
 # import ssl
-
 # ctx = ssl.create_default_context()
 # ctx.check_hostname = False
 # ctx.verify_mode = ssl.CERT_NONE
-
 # --- +++ ---
 
 # E.g 1820946382
@@ -74,8 +72,8 @@ def get_tracks_info(data, num_choice=False):
 
 def get_track_name_artist_only(data, num_choice=False):
     """
-    This function returns specific information about each track.
-    The function was created as a building block for a simple comparison algorithm.
+    This function returns specific information about each of the tracks
+    with or without enumeration.
     1. Title
     2. Artist name
     3. Track number (if num_choice is set to True)
@@ -99,8 +97,7 @@ def get_track_name_artist_only(data, num_choice=False):
 
 def get_albums(data, num_choice=False):
     """
-    This function returns specific information about each track.
-    The function was created as a building block for a simple comparison algorithm.
+    This function returns the album name with or without enumeration.
     1. Album name
     2. Element number (if num_choice is set to True)
     :param num_choice: Adds a number in the tuple containing the track info.
@@ -122,9 +119,8 @@ def get_albums(data, num_choice=False):
 
 def get_track_name(data, num_choice=False):
     """
-    This function returns specific information about each track.
-    The function was created as a building block for a simple comparison algorithm.
-    1. Album name
+    This function returns the track name with or without enumeration.
+    1. Track name
     2. Element number (if num_choice is set to True)
     :param num_choice: Adds a number in the tuple containing the track info.
     :param data: data requires a JSON file loaded as string (.loads method)
@@ -145,8 +141,7 @@ def get_track_name(data, num_choice=False):
 
 def get_artist(data, num_choice=False):
     """
-    This function returns specific information about each track.
-    The function was created as a building block for a simple comparison algorithm.
+    This function returns the artist name with or without enumeration.
     1. Artist name
     2. Element number (if num_choice is set to True)
     :param num_choice: Adds a number in the tuple containing the track info.
