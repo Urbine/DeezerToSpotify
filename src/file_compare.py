@@ -80,9 +80,9 @@ def track_search_spotify(track_name, limit, offset):
                                 market=None)
     return result
 
-
-file_deezer = "../tracks-playlist-Bill Evans Solo Piano-Spotify.txt"
-file_spotify = "../tracks-playlist-Music for supermarkets-Spotify.txt"
+# Relative path
+file_deezer = input("Please enter the filename that deezer_get.py generated (with extension)\n")
+file_spotify = input("Please enter the filename that spotify_get.py generated (with extension)\n")
 
 tracks_deezer = get_from_file(file_deezer)
 tracks_spotify = get_from_file(file_spotify)
